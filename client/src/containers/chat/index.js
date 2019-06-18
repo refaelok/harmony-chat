@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Launcher} from 'react-chat-window'
+import {Launcher} from '../react-chat-window'
 import {harmonyConnect} from "../../base/features/harmony-redux-react-connect";
 
 class Chat extends Component {

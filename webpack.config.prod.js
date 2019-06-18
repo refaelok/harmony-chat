@@ -24,7 +24,8 @@ module.exports = {
       exclude: /node_modules/,
       loader: ['babel-loader', 'style-loader', 'css-loader'],
       query: {
-        presets: ['@babel/preset-env']
+        presets: ['@babel/preset-env'],
+        plugins: ['transform-class-properties']
       }
     }]
   },

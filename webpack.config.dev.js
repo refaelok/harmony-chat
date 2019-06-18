@@ -19,23 +19,12 @@ module.exports = {
   },
   module: {
     rules: [{
-      exclude: /node_modules/
-    }, {
-      test: /\.js$/,
-      use: {
-        loader: 'babel-loader',
-        options: { presets: ['@babel/preset-env'] }
+      exclude: /node_modules/,
+      loader: 'babel-loader',
+      query: {
+        presets: ['@babel/preset-env'],
+        plugins: ['transform-class-properties']
       }
-    }, {
-      test: /\.css$/,
-      use: [
-        {
-          loader: "style-loader" // creates style nodes from JS strings
-        },
-        {
-          loader: "css-loader" // translates CSS into CommonJS
-        }
-      ]
     }]
   },
   resolve: {
@@ -53,6 +42,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       { from: CLIENT_PATH + '/style/css/*.css', to: 'style/bundle.css' },
+      { from: CLIENT_PATH + '/style/assets', to: 'assets' },
       { from: CLIENT_PATH + '/index.html', to: 'index.html' }
     ])
   ]
