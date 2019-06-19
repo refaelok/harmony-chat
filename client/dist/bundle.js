@@ -124,6 +124,8 @@ var FETCH_POST_SUCCESS = exports.FETCH_POST_SUCCESS = 'FETCH_POST_SUCCESS';
 var FETCH_POST_ERROR = exports.FETCH_POST_ERROR = 'FETCH_POST_ERROR';
 var DELETE_POST = exports.DELETE_POST = 'DELETE_POST';
 var DELETE_POST_ERROR = exports.DELETE_POST_ERROR = 'DELETE_POST_ERROR';
+var SEND_MESSAGE = exports.SEND_MESSAGE = 'SEND_MESSAGE';
+var RECEIVE_MESSAGE = exports.RECEIVE_MESSAGE = 'RECEIVE_MESSAGE';
 
 /***/ }),
 
@@ -141,6 +143,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.initializePosts = initializePosts;
+exports.sendMessage = sendMessage;
 exports.fetchPosts = fetchPosts;
 exports.createPost = createPost;
 exports.fetchPost = fetchPost;
@@ -154,6 +157,13 @@ function initializePosts() {
   return {
     type: ActionTypes.INITIAL_POSTS,
     payload: null
+  };
+}
+
+function sendMessage(message) {
+  return {
+    type: ActionTypes.SEND_MESSAGE,
+    payload: message
   };
 }
 
@@ -1278,17 +1288,11 @@ var _reactChatWindow = __webpack_require__(/*! ../react-chat-window */ "./client
 
 var _harmonyReduxReactConnect = __webpack_require__(/*! ../../base/features/harmony-redux-react-connect */ "./client/src/base/features/harmony-redux-react-connect/index.js");
 
+var _actions_posts = __webpack_require__(/*! ../../actions/posts/actions_posts */ "./client/src/actions/posts/actions_posts.js");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1312,49 +1316,28 @@ function (_Component) {
   _inherits(Chat, _Component);
 
   function Chat() {
-    var _this;
-
     _classCallCheck(this, Chat);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Chat).call(this));
-    _this.state = {
-      messageList: []
-    };
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(Chat).apply(this, arguments));
   }
 
   _createClass(Chat, [{
     key: "_onMessageWasSent",
     value: function _onMessageWasSent(message) {
-      this.setState({
-        messageList: _toConsumableArray(this.state.messageList).concat([message])
-      });
-    }
-  }, {
-    key: "_sendMessage",
-    value: function _sendMessage(text) {
-      if (text.length > 0) {
-        this.setState({
-          messageList: _toConsumableArray(this.state.messageList).concat([{
-            author: 'them',
-            type: 'text',
-            data: {
-              text: text
-            }
-          }])
-        });
-      }
+      var sendMessage = this.props.sendMessage;
+      sendMessage(message);
     }
   }, {
     key: "render",
     value: function render() {
+      var messageList = this.props.messageList;
       return _react.default.createElement("div", null, _react.default.createElement(_reactChatWindow.Launcher, {
         agentProfile: {
-          teamName: 'react-chat-window',
-          imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+          teamName: 'Board Games',
+          imageUrl: 'https://files-cloud.enjin.com/smiley/13332_image014.gif?0'
         },
         onMessageWasSent: this._onMessageWasSent.bind(this),
-        messageList: this.state.messageList,
+        messageList: messageList,
         showEmoji: true
       }));
     }
@@ -1364,8 +1347,13 @@ function (_Component) {
 }(_react.Component);
 
 var _default = (0, _harmonyReduxReactConnect.harmonyConnect)(Chat, function (state) {
-  return {};
-}, {});
+  console.log(state.chat);
+  return {
+    messageList: state.chat.messageList
+  };
+}, {
+  sendMessage: _actions_posts.sendMessage
+});
 
 exports.default = _default;
 
@@ -7035,6 +7023,66 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./client/src/reducers/chat/reducer_chat.js":
+/*!**************************************************!*\
+  !*** ./client/src/reducers/chat/reducer_chat.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var ActionTypes = _interopRequireWildcard(__webpack_require__(/*! ../../actions */ "./client/src/actions/index.js"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var INITIAL_STATE = {
+  messageList: []
+};
+
+function _default() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : INITIAL_STATE;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  var newState = _objectSpread({}, state);
+
+  switch (action.type) {
+    case ActionTypes.SEND_MESSAGE:
+      console.log('SEND', action);
+      newState.messageList = _toConsumableArray(newState.messageList).concat([action.payload]);
+      return newState;
+
+    case ActionTypes.RECEIVE_MESSAGE:
+      console.log('RECEIVE', action);
+      action.payload.author = 'them';
+      newState.messageList = _toConsumableArray(newState.messageList).concat([action.payload]);
+      return newState;
+
+    default:
+      return state;
+  }
+}
+
+/***/ }),
+
 /***/ "./client/src/reducers/index.js":
 /*!**************************************!*\
   !*** ./client/src/reducers/index.js ***!
@@ -7058,12 +7106,15 @@ var _reducer_user = _interopRequireDefault(__webpack_require__(/*! ./user/reduce
 
 var _reducer_posts = _interopRequireDefault(__webpack_require__(/*! ./posts/reducer_posts */ "./client/src/reducers/posts/reducer_posts.js"));
 
+var _reducer_chat = _interopRequireDefault(__webpack_require__(/*! ./chat/reducer_chat */ "./client/src/reducers/chat/reducer_chat.js"));
+
 var _reducer_i18n = _interopRequireDefault(__webpack_require__(/*! ../base/features/harmony-i18n/reducers/reducer_i18n */ "./client/src/base/features/harmony-i18n/reducers/reducer_i18n.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
   posts: _reducer_posts.default,
+  chat: _reducer_chat.default,
   i18n: _reducer_i18n.default,
   user: _reducer_user.default,
   form: _reduxForm.reducer
@@ -7334,6 +7385,59 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./client/src/sagas/chat/saga_chat.js":
+/*!********************************************!*\
+  !*** ./client/src/sagas/chat/saga_chat.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.sendMessage = sendMessage;
+
+var _effects = __webpack_require__(/*! redux-saga/effects */ "./node_modules/redux-saga/es/effects.js");
+
+var ActionTypes = _interopRequireWildcard(__webpack_require__(/*! ../../actions */ "./client/src/actions/index.js"));
+
+var _requests = _interopRequireDefault(__webpack_require__(/*! ../../base/api/requests */ "./client/src/base/api/requests.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+var _marked =
+/*#__PURE__*/
+regeneratorRuntime.mark(sendMessage);
+
+function sendMessage(api, action) {
+  return regeneratorRuntime.wrap(function sendMessage$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          try {
+            _requests.default.broadcastAction({
+              type: ActionTypes.RECEIVE_MESSAGE,
+              payload: action.payload
+            });
+          } catch (e) {
+            console.log(e);
+          }
+
+        case 1:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _marked);
+}
+
+/***/ }),
+
 /***/ "./client/src/sagas/index.js":
 /*!***********************************!*\
   !*** ./client/src/sagas/index.js ***!
@@ -7359,6 +7463,8 @@ var sagasUser = _interopRequireWildcard(__webpack_require__(/*! ./user/saga_user
 
 var sagasPosts = _interopRequireWildcard(__webpack_require__(/*! ./posts/saga_posts */ "./client/src/sagas/posts/saga_posts.js"));
 
+var sagasChat = _interopRequireWildcard(__webpack_require__(/*! ./chat/saga_chat */ "./client/src/sagas/chat/saga_chat.js"));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -7375,7 +7481,7 @@ function _callee() {
       switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return [(0, _effects.takeLatest)(ActionTypes.LOGIN, sagasUser.login, innorlate), (0, _effects.takeLatest)(ActionTypes.CREATE_USER, sagasUser.createUser, innorlate), (0, _effects.takeLatest)(ActionTypes.FETCH_POSTS, sagasPosts.fetchPosts, innorlate), (0, _effects.takeLatest)(ActionTypes.FETCH_POST, sagasPosts.fetchPost, innorlate), (0, _effects.takeLatest)(ActionTypes.CREATE_POST, sagasPosts.createPost, innorlate), (0, _effects.takeLatest)(ActionTypes.DELETE_POST, sagasPosts.deletePost, innorlate)];
+          return [(0, _effects.takeLatest)(ActionTypes.LOGIN, sagasUser.login, innorlate), (0, _effects.takeLatest)(ActionTypes.CREATE_USER, sagasUser.createUser, innorlate), (0, _effects.takeLatest)(ActionTypes.FETCH_POSTS, sagasPosts.fetchPosts, innorlate), (0, _effects.takeLatest)(ActionTypes.FETCH_POST, sagasPosts.fetchPost, innorlate), (0, _effects.takeLatest)(ActionTypes.CREATE_POST, sagasPosts.createPost, innorlate), (0, _effects.takeLatest)(ActionTypes.DELETE_POST, sagasPosts.deletePost, innorlate), (0, _effects.takeLatest)(ActionTypes.SEND_MESSAGE, sagasChat.sendMessage, innorlate)];
 
         case 2:
         case "end":
@@ -7539,10 +7645,9 @@ function createPost(api, action) {
 
         case 3:
           response = _context3.sent;
-          debugger;
 
           if (!(response.data.message === "Resource created")) {
-            _context3.next = 10;
+            _context3.next = 9;
             break;
           }
 
@@ -7553,35 +7658,35 @@ function createPost(api, action) {
 
           _harmonyHistory.default.push(_routes.PORTAL);
 
-          _context3.next = 12;
+          _context3.next = 11;
           break;
 
-        case 10:
-          _context3.next = 12;
+        case 9:
+          _context3.next = 11;
           return (0, _effects.put)({
             type: ActionTypes.CREATE_POST_ERROR,
             message: response.data.message
           });
 
-        case 12:
-          _context3.next = 18;
+        case 11:
+          _context3.next = 17;
           break;
 
-        case 14:
-          _context3.prev = 14;
+        case 13:
+          _context3.prev = 13;
           _context3.t0 = _context3["catch"](0);
-          _context3.next = 18;
+          _context3.next = 17;
           return (0, _effects.put)({
             type: ActionTypes.CREATE_POST_ERROR,
             message: _context3.t0
           });
 
-        case 18:
+        case 17:
         case "end":
           return _context3.stop();
       }
     }
-  }, _marked3, null, [[0, 14]]);
+  }, _marked3, null, [[0, 13]]);
 }
 
 function deletePost(api, action) {

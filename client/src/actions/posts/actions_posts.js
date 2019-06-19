@@ -7,6 +7,13 @@ export function initializePosts() {
     }
 }
 
+export function sendMessage (message) {
+    return {
+        type: ActionTypes.SEND_MESSAGE,
+        payload: message
+    };
+}
+
 export function fetchPosts () {
     return {
         type: ActionTypes.FETCH_POSTS,

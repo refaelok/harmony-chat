@@ -1,56 +1,42 @@
 import React, {Component} from 'react'
 import {Launcher} from '../react-chat-window'
 import {harmonyConnect} from "../../base/features/harmony-redux-react-connect";
+import { sendMessage } from '../../actions/posts/actions_posts';
 
 class Chat extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            messageList: []
-        };
-    }
-
     _onMessageWasSent(message) {
-        this.setState({
-            messageList: [...this.state.messageList, message]
-        })
-    }
+        const {sendMessage} = this.props;
 
-    _sendMessage(text) {
-        if (text.length > 0) {
-            this.setState({
-                messageList: [...this.state.messageList, {
-                    author: 'them',
-                    type: 'text',
-                    data: { text }
-                }]
-            })
-        }
+        sendMessage(message);
     }
 
     render() {
-        return (<div>
-            <Launcher
-                agentProfile={{
-                    teamName: 'react-chat-window',
-                    imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
-                }}
-                onMessageWasSent={this._onMessageWasSent.bind(this)}
-                messageList={this.state.messageList}
-                showEmoji
-            />
-        </div>)
+        const {messageList} = this.props;
+
+        return (
+            <div>
+                <Launcher
+                    agentProfile={{
+                        teamName: 'Board Games',
+                        imageUrl: 'https://files-cloud.enjin.com/smiley/13332_image014.gif?0'
+                    }}
+                    onMessageWasSent={this._onMessageWasSent.bind(this)}
+                    messageList={messageList}
+                    showEmoji
+                />
+            </div>
+        );
     }
 }
 
 export default harmonyConnect(Chat,
     (state) => {
+        console.log(state.chat);
         return {
-
+            messageList: state.chat.messageList
         }
     },
     {
-
+        sendMessage
     }
 );

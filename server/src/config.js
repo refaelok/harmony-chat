@@ -20,7 +20,8 @@ const config = {
 	},
 
     allowedActions: [
-        actions.FETCH_POSTS
+        actions.FETCH_POSTS,
+        actions.RECEIVE_MESSAGE
     ]
 
 

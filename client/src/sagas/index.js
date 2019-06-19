@@ -3,6 +3,7 @@ import createApi from '../requests';
 import * as ActionTypes from '../actions';
 import * as sagasUser from './user/saga_user';
 import * as sagasPosts from './posts/saga_posts';
+import * as sagasChat from './chat/saga_chat';
 
 
 const innorlate = createApi();
@@ -15,5 +16,6 @@ export default function* () {
         takeLatest(ActionTypes.FETCH_POST, sagasPosts.fetchPost, innorlate),
         takeLatest(ActionTypes.CREATE_POST, sagasPosts.createPost, innorlate),
         takeLatest(ActionTypes.DELETE_POST, sagasPosts.deletePost, innorlate),
+        takeLatest(ActionTypes.SEND_MESSAGE, sagasChat.sendMessage, innorlate)
     ]
 }
