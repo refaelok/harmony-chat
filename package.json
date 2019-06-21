@@ -91,7 +91,7 @@
     "jsonwebtoken": "7.4.3",
     "lodash": "4.17.11",
     "mongoose": "5.4.0",
-    "mysql": "2.13.0",
+    "mysql": "2.14.0",
     "prop-types": "15.6.2",
     "react": "16.5.0",
     "react-device-detect": "1.6.2",
