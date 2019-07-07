@@ -11,15 +11,26 @@ class Chat extends Component {
         sendMessage(message);
     }
 
+    // PICACHO EXAMPLE
+    static renderPicacho(renderPicacho) {
+        if (renderPicacho) {
+            return (
+                <img src="/dist/assets/picacho.webp" alt=""/>
+            );
+        }
+
+    }
+
     render() {
-        const {messageList} = this.props;
+        const {messageList, renderPicacho} = this.props;
 
         return (
             <div>
+                {Chat.renderPicacho(renderPicacho)}
                 <Launcher
                     agentProfile={{
-                        teamName: 'Board Games',
-                        imageUrl: 'https://files-cloud.enjin.com/smiley/13332_image014.gif?0'
+                        teamName: 'Pokemon',
+                        imageUrl: 'https://cdn2.iconfinder.com/data/icons/pokemon-filledoutline/64/pokeball-people-pokemon-nintendo-video-game-gaming-gartoon-ball-128.png'
                     }}
                     onMessageWasSent={this._onMessageWasSent.bind(this)}
                     messageList={messageList}
@@ -32,9 +43,9 @@ class Chat extends Component {
 
 export default baseConnect(Chat,
     (state) => {
-        console.log(state.chat);
         return {
-            messageList: state.chat.messageList
+            messageList: state.chat.messageList,
+            renderPicacho: state.chat.renderPicacho
         }
     },
     {

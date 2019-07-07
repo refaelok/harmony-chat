@@ -5,13 +5,13 @@ import createApi from '../requests';
 
 import { UsersTypes } from '../redux/users';
 import { PostsTypes } from '../redux/posts';
-import { ChatTypes } from '../redux/chat';
+import { ChatTypes } from '../redux/chat'; // CODE FOR LIVE EXAMPLE
 
 /* ------------- Sagas ------------- */
 
 import * as sagasUser from './user/saga_user';
 import * as sagasPosts from './posts/saga_posts';
-import * as sagasChat from './chat/saga_chat';
+import * as sagasChat from './chat/saga_chat'; // CODE FOR LIVE EXAMPLE
 
 
 const innorlate = createApi();
@@ -24,6 +24,7 @@ export default function* () {
 		takeLatest(PostsTypes.FETCH_POST, sagasPosts.fetchPost, innorlate),
 		takeLatest(PostsTypes.CREATE_POST, sagasPosts.createPost, innorlate),
 		takeLatest(PostsTypes.DELETE_POST, sagasPosts.deletePost, innorlate),
-		takeLatest(ChatTypes.SEND_MESSAGE, sagasChat.sendMessage, innorlate)
+
+		takeLatest(ChatTypes.SEND_MESSAGE, sagasChat.sendMessage, innorlate) // CODE FOR LIVE EXAMPLE
 	];
 }

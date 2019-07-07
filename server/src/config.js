@@ -22,7 +22,8 @@ const config = {
 
 	allowedActions: [
 		PostsTypes.FETCH_POSTS,
-		ChatTypes.RECEIVE_MESSAGE
+		ChatTypes.RECEIVE_MESSAGE, // CODE FOR LIVE EXAMPLE
+		ChatTypes.RENDER_PICACHO // PICACHO EXAMPLE
 	]
 
 
