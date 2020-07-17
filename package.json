@@ -89,7 +89,7 @@
     "history": "4.7.2",
     "jquery": "3.4.0",
     "jsonwebtoken": "7.4.3",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "mongoose": "5.4.0",
     "mysql": "2.14.0",
     "prop-types": "15.6.2",
